@@ -66,3 +66,30 @@ describe("Borrow Book API", () => {
     });
   });
 });
+
+describe("Return Book API", () => {
+    const apiUrl = "http://localhost:3001/test/returnBook";
+  
+    it("should return a borrowed book successfully", async () => {
+
+      const returnResponse = await axios.post(apiUrl, {
+        isbn: "S123",
+      });
+  
+      expect(returnResponse.status).toBe(200);
+      expect(returnResponse.data).toEqual({
+        message: "Book returned successfully",
+      });
+    });
+  
+    it("should fail to return a book that is not borrowed", async () => {
+      const response = await axios.post(apiUrl, {
+        isbn: "S123",
+      });
+  
+      expect(response.status).toBe(409);
+      expect(response.data).toEqual({
+        error: "Book is not borrowed, cannot return it",
+      });
+    });
+  });
