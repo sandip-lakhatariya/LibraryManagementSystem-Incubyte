@@ -3,11 +3,6 @@ import Book from "../Models/books.model";
 
 describe("Book Routes", () => {
 
-    // beforeEach(async () => {
-    //     // Clear the database before each test
-    //     await Book.deleteMany({});
-    // });
-
   it("should add a new book and return success response", async () => {
 
     const requestData = {
@@ -19,7 +14,6 @@ describe("Book Routes", () => {
     
     const apiUrl = "http://localhost:3001/test/addBook";
 
-     // First request: Add the book successfully
      const response = await axios.post(apiUrl, requestData);
      expect(response.status).toBe(201);
      expect(response.data).toEqual({
@@ -46,4 +40,29 @@ describe("Book Routes", () => {
      });
   });
 
+});
+
+describe("Borrow Book API", () => {
+  it("should allow borrowing a book", async () => {
+
+    const borrowRequest = await axios.post("http://localhost:3001/borrowBook", {
+      isbn: "S123",
+    });
+
+    expect(borrowRequest.status).toBe(200);
+    expect(borrowRequest.data).toEqual({
+      message: "Book borrowed successfully",
+    });
+  });
+
+  it("should not allow borrowing an already borrowed book", async () => {
+    const borrowRequest = await axios.post("http://localhost:3001/borrowBook", {
+      isbn: "S123",
+    }).catch((err) => err.response);
+
+    expect(borrowRequest.status).toBe(409);
+    expect(borrowRequest.data).toEqual({
+      error: "Book is already borrowed",
+    });
+  });
 });

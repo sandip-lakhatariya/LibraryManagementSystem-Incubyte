@@ -23,6 +23,10 @@ const bookSchema = new Schema(
         required: true,
         trim: true
       },
+      isBorrowed: { 
+        type: Boolean, 
+        default: false 
+    },
   }
 );
 
@@ -31,6 +35,7 @@ interface IBook extends Document {
   title: string;
   author: string;
   publication_year: number;
+  isBorrowed: boolean;
 }
 
 const Book = mongoose.model<IBook>("Book", bookSchema);
