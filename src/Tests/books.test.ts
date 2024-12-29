@@ -85,7 +85,7 @@ describe("Return Book API", () => {
     it("should fail to return a book that is not borrowed", async () => {
       const response = await axios.post(apiUrl, {
         isbn: "S123",
-      });
+      }).catch((err) => err.response);
   
       expect(response.status).toBe(409);
       expect(response.data).toEqual({
