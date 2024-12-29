@@ -93,3 +93,15 @@ describe("Return Book API", () => {
       });
     });
   });
+
+describe("View Books API", () => {
+  const apiUrl = "http://localhost:3001/test/viewBooks";
+
+  it("should return a list of available books", async () => {
+    const response = await axios.get(apiUrl);
+
+    expect(response.status).toBe(200);
+    expect(response.data.message).toBe("Available books retrieved successfully");
+    expect(Array.isArray(response.data.books)).toBe(true);
+  });
+});
