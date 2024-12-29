@@ -33,4 +33,35 @@ export const bookController = async (req: Request, res: Response) => {
       console.error("Error creating user:", error);
       res.status(500).json({ error: "Internal server error" });
     }
-  }
+  };
+
+  export const borrowBook = async (req: Request, res: Response) => {
+    try {
+      const { isbn } = req.body;
+  
+      if (!isbn) {
+        res.status(400).json({ error: "ISBN is required" });
+      }
+      else {
+        const book = await Book.findOne({ isbn });
+        if (!book) {
+            res.status(404).json({ error: "Book not found" });
+        }
+        else if (book.isBorrowed) {
+            res.status(409).json({ error: "Book is already borrowed" });
+        }
+        else {
+            book.isBorrowed = true;
+            await book.save();
+        
+            res.status(200).json({
+                message: "Book borrowed successfully",
+            });
+        }
+      }
+  
+    } catch (error) {
+      console.error("Error borrowing book:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };

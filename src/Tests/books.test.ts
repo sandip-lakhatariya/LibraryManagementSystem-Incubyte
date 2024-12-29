@@ -45,7 +45,7 @@ describe("Book Routes", () => {
 describe("Borrow Book API", () => {
   it("should allow borrowing a book", async () => {
 
-    const borrowRequest = await axios.post("http://localhost:3001/borrowBook", {
+    const borrowRequest = await axios.post("http://localhost:3001/test/borrowBook", {
       isbn: "S123",
     });
 
@@ -56,7 +56,7 @@ describe("Borrow Book API", () => {
   });
 
   it("should not allow borrowing an already borrowed book", async () => {
-    const borrowRequest = await axios.post("http://localhost:3001/borrowBook", {
+    const borrowRequest = await axios.post("http://localhost:3001/test/borrowBook", {
       isbn: "S123",
     }).catch((err) => err.response);
 
