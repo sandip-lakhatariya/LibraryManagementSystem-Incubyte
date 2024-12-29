@@ -11,17 +11,23 @@ export const bookController = async (req: Request, res: Response) => {
         return;
       }
   
-      console.log("Hello");
+        const existingBook = await Book.findOne({ isbn });
 
-      const book = new Book({ isbn, title, author, publication_year });
-      const result = await book.save();
-  
-
-      if(result){
-          res.status(201).json({
-              message: "Book added successfully",
-          });
-      }
+        if (existingBook) {
+            res.status(409).json({ 
+                error: "ISBN must be unique. This ISBN already exists." 
+            });
+        }
+        else{
+            const book = new Book({ isbn, title, author, publication_year });
+            const result = await book.save();
+        
+            if(result){
+                res.status(201).json({
+                    message: "Book added successfully",
+                });
+            }
+        }
   
     } catch (error) {
       console.error("Error creating user:", error);
