@@ -97,3 +97,24 @@ export const bookController = async (req: Request, res: Response) => {
       res.status(500).json({ error: "Internal server error" });
     }
   };
+
+  export const viewBooks = async (req: Request, res: Response) => {
+    try {
+      const books = await Book.find({ isBorrowed: false }).select(
+        "isbn title author publication_year"
+      );
+  
+      if (books.length == 0) {
+        res.status(404).json({ message: "No available books in the library" });
+      }
+      else {
+        res.status(200).json({
+            message: "Available books retrieved successfully",
+            books,
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching books:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
